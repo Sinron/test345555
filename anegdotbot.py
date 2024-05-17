@@ -4,11 +4,26 @@ from bs4 import BeautifulSoup
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 import time
 import hashlib
+import os
+from dotenv import load_dotenv # для хранение переменных окружения
+load_dotenv() 
+
+TOKEN_TG_BOT = os.getenv('TOKEN_TG_BOT')
+"""токен для работы с API Telegram"""
+bot = telebot.TeleBot(TOKEN_TG_BOT)
+
+ANECDOTIKA_API_PID = os.getenv('ANECDOTIKA_API_PID') 
+"""имя профиля"""
+ANECDOTIKA_API_TOKEN = os.getenv('ANECDOTIKA_API_TOKEN')
+"""засекреченый токен для работы с сайтом"""
+ANECDOTIKA_API_KEY = os.getenv('ANECDOTIKA_API_KEY')
+"""засекреченый ключ для работы с сайтом"""
+TOKEN_TG_BOT = os.getenv('TOKEN_TG_BOT')
+"""токен для работы с API Telegram"""
 
 
-
-query = 'pid=' + PID + '&method=getRandItem&uts=' + str(int(time.time()))  # формируем строку параметров
-signature = hashlib.md5((query + KEY).encode())  # получаем цифровую подпись
+query = 'pid=' + ANECDOTIKA_API_PID + '&method=getRandItem&uts=' + str(int(time.time()))  # формируем строку параметров
+signature = hashlib.md5((query + ANECDOTIKA_API_KEY).encode())  # получаем цифровую подпись
 url = 'http://anecdotica.ru/api?' + query + '&hash=' + signature.hexdigest()
 
 
@@ -49,7 +64,9 @@ def handler_messages(message):
 
 
 
+
 bot.polling(non_stop=True, interval=5)
+
 
 # <item><text>— Что такое конец света? 
 # — Это массовое применение системы контроля
